@@ -2,6 +2,7 @@
 <html lang="th">
 <head>
 <meta charset="utf-8">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob:; font-src 'self'; connect-src 'none'; worker-src 'self'; frame-src 'none'; object-src 'none'; base-uri 'none'; form-action 'none'">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>จดจ่าย</title>
 <meta name="description" content="บันทึกรายจ่ายรายวัน ดูงบบนปฏิทิน ข้อมูลเก็บในเครื่องเท่านั้น">
@@ -13,9 +14,6 @@
 <link rel="manifest" href="manifest.webmanifest">
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
 <link rel="icon" type="image/png" href="icon-192.png">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Thai:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
 :root{
   --bg:#f3f5fb;--card:#ffffff;--ink:#1c2333;--muted:#677086;--faint:#9aa2b3;--line:#e4e8f1;--soft:#f1f3f9;
@@ -47,7 +45,7 @@
 }
 *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
 html{background:var(--bg)}
-body{margin:0;background:var(--bg);color:var(--ink);font-family:'IBM Plex Sans Thai',-apple-system,'Sukhumvit Set','Thonburi',system-ui,sans-serif;font-size:15px;line-height:1.45;padding-bottom:calc(86px + env(safe-area-inset-bottom));-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:-apple-system,BlinkMacSystemFont,'Sukhumvit Set','Thonburi','Leelawadee UI','Noto Sans Thai',system-ui,sans-serif;font-size:15px;line-height:1.45;padding-bottom:calc(86px + env(safe-area-inset-bottom));-webkit-text-size-adjust:100%}
 body.noscroll{overflow:hidden}
 button{font:inherit;color:inherit;cursor:pointer}
 input,select,textarea{font:inherit;font-size:16px;color:var(--ink)}
@@ -222,6 +220,40 @@ main{max-width:560px;margin:0 auto;padding:2px 16px 24px}
 .toast button{border:0;background:none;color:#a9b8ff;font-weight:700;padding:0}
 .shake{animation:shake .3s}
 @keyframes shake{25%{transform:translateX(-6px)}75%{transform:translateX(6px)}}
+/* import */
+.imp-btns{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.imp-btns button{border:1.5px dashed color-mix(in srgb,var(--accent) 45%,transparent);background:var(--accent-soft);color:var(--accent);border-radius:16px;padding:14px 8px;font-weight:600;display:flex;flex-direction:column;align-items:center;gap:4px;font-size:14px}
+.imp-btns button span{font-size:26px}
+.imp-btns button small{font-weight:400;color:var(--muted);font-size:11.5px}
+.menu-list{display:flex;flex-direction:column;gap:8px}
+.menu-list button{display:flex;align-items:center;gap:12px;border:1px solid var(--line);background:var(--card);border-radius:16px;padding:14px;text-align:left}
+.menu-list button span{font-size:26px;width:40px;text-align:center}
+.menu-list button b{display:block}
+.menu-list button small{color:var(--muted);font-size:12.5px}
+.prog{height:8px;border-radius:8px;background:var(--soft);overflow:hidden;margin:14px 0 8px}
+.prog i{display:block;height:100%;background:linear-gradient(90deg,var(--accent),var(--accent2));transition:width .3s}
+.irow{border:1px solid var(--line);border-radius:14px;padding:10px 12px;margin-bottom:8px;background:var(--card)}
+.irow.off{opacity:.55;background:var(--soft)}
+.irow.unk{border-color:var(--warn-line);background:color-mix(in srgb,var(--warn-bg) 55%,var(--card))}
+.irow .top1{display:flex;align-items:center;gap:10px}
+.irow .top1 input[type=checkbox]{width:22px;height:22px;accent-color:var(--accent);flex:none}
+.irow .who{flex:1;min-width:0}
+.irow .who b{display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;font-weight:600}
+.irow .who small{color:var(--muted);font-size:12px}
+.irow .amtin{width:96px;text-align:right;font-weight:700;border:1px solid var(--line);background:var(--soft);border-radius:10px;padding:6px 8px}
+.irow .ctl{display:flex;gap:8px;align-items:center;margin-top:8px;flex-wrap:wrap}
+.irow .ctl select{flex:1;min-width:150px;border:1px solid var(--line);background:var(--soft);border-radius:10px;padding:8px 10px;min-height:40px;-webkit-appearance:none;appearance:none}
+.irow .ctl label{font-size:12.5px;color:var(--muted);display:flex;align-items:center;gap:5px}
+.why{font-size:11.5px;border-radius:7px;padding:2px 7px;font-weight:600;white-space:nowrap}
+.why.rule{background:var(--good-bg);color:var(--good)} .why.dict{background:var(--accent-soft);color:var(--accent)} .why.unk{background:var(--warn-bg);color:var(--warn)} .why.skip{background:var(--soft);color:var(--muted)} .why.chk{background:var(--bad-bg);color:var(--bad)}
+.irow .thumb{width:44px;height:58px;object-fit:cover;object-position:top;border-radius:8px;border:1px solid var(--line);flex:none}
+.sticky-save{position:sticky;bottom:calc(-20px - env(safe-area-inset-bottom));background:var(--card);padding:10px 0 calc(8px + env(safe-area-inset-bottom));margin-top:6px;border-top:1px solid var(--line)}
+.src{font-style:normal;font-size:10px;font-weight:700;border-radius:5px;padding:0 5px;margin-left:3px;color:#fff}
+.src.KBANK{background:#138f2d} .src.SCB{background:#4e2a84} .src.OTHER{background:#64748b}
+.rulelist{display:flex;flex-direction:column;gap:6px;max-height:240px;overflow:auto;margin-bottom:8px}
+.rulelist div{display:flex;align-items:center;gap:8px;background:var(--soft);border-radius:10px;padding:6px 8px 6px 10px;font-size:13px}
+.rulelist div span{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.rulelist div button{border:0;background:none;color:var(--faint);width:28px;height:28px}
 @media (max-width:360px){.cell .a{font-size:9.5px}.cal-head,.cal-grid{gap:4px}.tod small{font-size:10px}}
 </style>
 </head>
@@ -232,7 +264,7 @@ main{max-width:560px;margin:0 auto;padding:2px 16px 24px}
   <button class="menu" data-act="settings" aria-label="ตั้งค่า"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 7h16M4 12h16M4 17h16"/></svg></button>
 </header>
 <main id="view"></main>
-<button class="fab" id="fab" data-act="add" aria-label="เพิ่มรายจ่าย">+</button>
+<button class="fab" id="fab" data-act="fabmenu" aria-label="เพิ่มรายจ่าย">+</button>
 <nav class="nav"><div class="in">
   <button data-tab="summary"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"><path d="M11 3.5a8.5 8.5 0 1 0 9.5 9.5H11z"/><path d="M14 2.8a8.5 8.5 0 0 1 7.2 7.2H14z"/></svg>สรุป</button>
   <button data-tab="calendar"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><rect x="3.5" y="5" width="17" height="15.5" rx="3"/><path d="M3.5 10h17M8 3v4M16 3v4"/><circle cx="12" cy="15" r="1.4" fill="currentColor" stroke="none"/></svg>ปฏิทิน</button>
@@ -241,6 +273,8 @@ main{max-width:560px;margin:0 auto;padding:2px 16px 24px}
   <button data-tab="rec"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4.5 11a7.5 7.5 0 0 1 13-4.6L19.5 8.5"/><path d="M19.5 4v4.5H15"/><path d="M19.5 13a7.5 7.5 0 0 1-13 4.6L4.5 15.5"/><path d="M4.5 20v-4.5H9"/></svg>รายการประจำ</button>
 </div></nav>
 <input type="file" id="importFile" accept="application/json,.json" hidden>
+<input type="file" id="slipFile" accept="image/*" multiple hidden>
+<input type="file" id="pdfFile" accept="application/pdf,.pdf" multiple hidden>
 <script>
 'use strict';
 /* ---------- helpers ---------- */
@@ -281,10 +315,12 @@ const DEF_CATS = [
   { id: 'bill', name: 'บิล/ค่าบริการ', icon: '🧾', color: '#64748b' },
   { id: 'family', name: 'ครอบครัว', icon: '🏠', color: '#16a34a' },
   { id: 'work', name: 'งาน/เรียน', icon: '📚', color: '#4f46e5' },
+  { id: 'transfer', name: 'โอนให้บุคคล', icon: '👤', color: '#0891b2' },
+  { id: 'loan', name: 'ผ่อน/บัตรเครดิต', icon: '💳', color: '#be123c' },
   { id: 'other', name: 'อื่น ๆ', icon: '📦', color: '#94a3b8' }
 ];
 const PALETTE = ['#f97316','#0ea5e9','#ec4899','#14b8a6','#8b5cf6','#e11d48','#16a34a','#4f46e5','#b7791f','#0369a1','#64748b'];
-const defState = () => ({ v: 1, settings: { mode: 'monthly', monthly: 0, daily: 0, warn: 80, payday: 0, lastBackup: null }, cats: DEF_CATS.map(c => ({ ...c })), ex: [], rec: [] });
+const defState = () => ({ v: 1, settings: { mode: 'monthly', monthly: 0, daily: 0, warn: 80, payday: 0, lastBackup: null }, cats: DEF_CATS.map(c => ({ ...c })), ex: [], rec: [], rules: {} });
 function load() {
   let s = defState(), raw = null;
   try { raw = localStorage.getItem(KEY); } catch (e) {}
@@ -295,6 +331,8 @@ function load() {
       if (!Array.isArray(s.ex)) s.ex = [];
       if (!Array.isArray(s.rec)) s.rec = [];
       if (!Array.isArray(s.cats) || !s.cats.length) s.cats = DEF_CATS.map(c => ({ ...c }));
+      if (!s.rules || typeof s.rules !== 'object') s.rules = {};
+      for (const id of ['transfer', 'loan']) if (!s.cats.some(c => c.id === id)) { const oi = s.cats.findIndex(c => c.id === 'other'); s.cats.splice(oi < 0 ? s.cats.length : oi, 0, { ...DEF_CATS.find(c => c.id === id) }); }
       if (!s.cats.some(c => c.id === 'other')) s.cats.push({ ...DEF_CATS[DEF_CATS.length - 1] });
     } catch (e) {}
   }
@@ -304,7 +342,7 @@ let S = load();
 let IX = null, saveWarned = false;
 function save() {
   IX = null;
-  try { localStorage.setItem(KEY, JSON.stringify({ v: 1, settings: S.settings, cats: S.cats, ex: S.ex, rec: S.rec })); }
+  try { localStorage.setItem(KEY, JSON.stringify({ v: 1, settings: S.settings, cats: S.cats, ex: S.ex, rec: S.rec, rules: S.rules })); }
   catch (e) { if (!saveWarned) { saveWarned = true; toast('⚠️ บันทึกลงเครื่องไม่ได้ ลองปิดโหมดส่วนตัวของ Safari'); } }
 }
 const now0 = new Date();
@@ -350,7 +388,7 @@ function monthNav() {
 }
 function row(e, showDate) {
   const c = catOf(e.cat);
-  const tags = (e.tags && e.tags.h ? '<em class="tg hl">สุขภาพ</em>' : '') + (e.tags && e.tags.l ? '<em class="tg lux">ฟุ่มเฟือย</em>' : '') + (e.fixed ? '<em class="tg fx">ประจำ</em>' : '');
+  const tags = (e.tags && e.tags.h ? '<em class="tg hl">สุขภาพ</em>' : '') + (e.tags && e.tags.l ? '<em class="tg lux">ฟุ่มเฟือย</em>' : '') + (e.fixed ? '<em class="tg fx">ประจำ</em>' : '') + (e.src ? `<em class="src ${e.src.bank === 'KBANK' || e.src.bank === 'SCB' ? e.src.bank : 'OTHER'}">${e.src.bank === 'KBANK' ? 'K' : e.src.bank === 'SCB' ? 'SCB' : '฿'}</em>` : '');
   return `<button class="item" data-act="edit" data-id="${e.id}"><span class="ic" style="background:${c.color}22">${c.icon}</span><span class="tx"><b>${esc(e.note || c.name)}</b><small>${showDate ? shortDate(e.date) + ' · ' : ''}${e.time ? e.time + ' น. · ' : ''}${esc(c.name)}${tags}</small></span><span class="am">฿${fmt(e.amt)}</span></button>`;
 }
 function pillFor(lv, sp, bud) {
@@ -386,6 +424,7 @@ function vToday() {
   const lb = S.settings.lastBackup;
   if (real.length >= 30 && (!lb || Date.now() - lb > 14 * 864e5)) h += `<div class="banner">💾<div class="grow">${lb ? 'ไม่ได้สำรองข้อมูลมา ' + Math.floor((Date.now() - lb) / 864e5) + ' วันแล้ว' : 'ยังไม่เคยสำรองข้อมูล'} — ถ้าล้างประวัติ Safari ข้อมูลอาจหายได้</div><button class="btn sm soft" data-act="backup">สำรอง</button></div>`;
   if (S.ex.some(e => e.demo)) h += `<div class="banner info">🧪<div class="grow">ตอนนี้มีข้อมูลตัวอย่างอยู่ ลบออกได้ก่อนเริ่มใช้จริง</div><button class="btn sm soft" data-act="clearDemo">ลบตัวอย่าง</button></div>`;
+  h += importCard();
   const p = bud > 0 ? Math.min(1, sp / bud) : 0, C = 2 * Math.PI * 44;
   const col = lv === 'over' ? 'var(--bad)' : lv === 'high' ? 'var(--lux)' : 'var(--good)';
   const left = bud - sp;
@@ -642,6 +681,7 @@ function saveForm() {
   const date = sh.querySelector('#fDate').value || todayStr();
   const rec = { id: F.id || uid(), date, time: sh.querySelector('#fTime').value || '', amt, cat: F.cat, note: sh.querySelector('#fNote').value.trim(), tags: { h: !!F.tags.h, l: !!F.tags.l }, fixed: !!F.fixed };
   if (F.rid) { rec.rid = F.rid; rec.rm = F.rm || date.slice(0, 7); }
+  if (F.src) { rec.src = F.src; const k = payeeKey(F.src.payee); if (k) S.rules[k] = { cat: rec.cat, fixed: rec.fixed }; }
   const before = daySpent(date), bud = dayBudget(date);
   const i = S.ex.findIndex(x => x.id === rec.id);
   if (i >= 0) { const old = S.ex[i]; if (old.demo) rec.demo = true; S.ex[i] = rec; } else S.ex.push(rec);
@@ -697,13 +737,16 @@ function openSettings() {
   <label class="fld"><span>เงินเดือนออกวันที่</span><select id="sPay"><option value="0">ไม่ระบุ</option>${Array.from({ length: 31 }, (_, i) => `<option value="${i + 1}"${+s.payday === i + 1 ? ' selected' : ''}>${i + 1}</option>`).join('')}<option value="99"${+s.payday === 99 ? ' selected' : ''}>วันสุดท้ายของเดือน</option></select></label></div>
   <div class="sec"><h3>หมวดหมู่</h3><div class="catman" id="catman">${catManHtml()}</div>
   <div class="addcat"><input id="ncIc" placeholder="🐶" maxlength="4" aria-label="ไอคอน"><input id="ncName" placeholder="ชื่อหมวดใหม่ เช่น สัตว์เลี้ยง" aria-label="ชื่อหมวด"><button class="btn sm soft" data-act="catAdd">เพิ่ม</button></div></div>
+  <div class="sec"><h3>การนำเข้าจากธนาคาร</h3>
+  <label class="fld"><span>ชื่อเจ้าของบัญชี — ใช้แยก "โอนเข้าบัญชีตัวเอง" ออกจากรายจ่าย (ดึงจาก statement ให้อัตโนมัติ)</span><input id="sMyName" value="${esc(s.myName || '')}" placeholder="เช่น นาย สมชาย ใจดี" autocomplete="off"></label>
+  <div class="small muted" style="margin-bottom:6px">ชื่อผู้รับที่จำหมวดไว้ (${Object.keys(S.rules).length})</div><div class="rulelist" id="rulelist">${rulesHtml()}</div></div>
   <div class="sec"><h3>ข้อมูล <span class="muted small" style="font-weight:400">— ${S.ex.length} รายการ · ${S.rec.length} รายการประจำ</span></h3>
   <div class="btnrow"><button class="btn soft" data-act="backup">💾 สำรองข้อมูล</button><button class="btn soft" data-act="import">📂 กู้คืนจากไฟล์</button></div>
   <div class="btnrow"><button class="btn soft" data-act="csv">⬇️ ส่งออก CSV</button>${S.ex.some(e => e.demo) || S.rec.some(r => r.demo) ? '<button class="btn" data-act="clearDemo">🧪 ลบข้อมูลตัวอย่าง</button>' : '<button class="btn" data-act="demo">🧪 ใส่ข้อมูลตัวอย่าง</button>'}</div>
   <div class="small muted" style="margin-bottom:8px">${s.lastBackup ? 'สำรองล่าสุด ' + shortDate(ymd(new Date(s.lastBackup))) : 'ยังไม่เคยสำรอง'} · ไฟล์สำรองใช้ย้ายข้อมูลไปเครื่องใหม่ได้ ควรสำรองทุก 1–2 สัปดาห์</div>
   <button class="btn danger block" data-act="wipe">ลบข้อมูลทั้งหมด</button></div>
   <div class="sec"><h3>ติดตั้งบน iPhone ให้เป็นแอพ</h3><ol class="steps"><li>เปิดหน้านี้ด้วย Safari</li><li>แตะปุ่มแชร์ (สี่เหลี่ยมมีลูกศรชี้ขึ้น)</li><li>เลือก "เพิ่มไปยังหน้าจอโฮม" แล้วกด "เพิ่ม"</li><li>เปิดจากไอคอน "จดจ่าย" บนหน้าจอเสมอ ใช้ได้แม้ไม่มีเน็ต</li></ol>
-  <div class="small muted" style="margin-top:8px">🔒 ข้อมูลทั้งหมดเก็บในเครื่องนี้เท่านั้น ไม่ส่งไปที่ไหน ไม่มีบัญชีผู้ใช้</div></div>`);
+  <div class="small muted" style="margin-top:8px">🔒 ข้อมูลทั้งหมดเก็บในเครื่องนี้เท่านั้น ไม่มีบัญชีผู้ใช้ · หน้าแอพถูกล็อกไม่ให้ส่งข้อมูลออกอินเทอร์เน็ต · สลิปและ statement อ่านในเครื่อง แอพไม่เก็บรูป เก็บแค่วันที่ จำนวนเงิน และชื่อผู้รับ</div></div>`);
   updPerDay();
 }
 function catManHtml() {
@@ -728,7 +771,7 @@ async function saveFile(name, text, type) {
   return true;
 }
 async function backup() {
-  const data = JSON.stringify({ app: 'jodjai', v: 1, exported: new Date().toISOString(), settings: { ...S.settings }, cats: S.cats, ex: S.ex, rec: S.rec });
+  const data = JSON.stringify({ app: 'jodjai', v: 1, exported: new Date().toISOString(), settings: { ...S.settings }, cats: S.cats, ex: S.ex, rec: S.rec, rules: S.rules });
   const ok = await saveFile(`จดจ่าย_สำรอง_${todayStr()}.json`, data, 'application/json');
   if (ok) { S.settings.lastBackup = Date.now(); save(); toast('สำรองข้อมูลแล้ว'); if (U.tab === 'today') render(); }
 }
@@ -748,7 +791,9 @@ function importData(text) {
     S.settings = { ...S.settings, ...(o.settings || {}) };
     if (Array.isArray(o.cats) && o.cats.length) S.cats = o.cats;
     S.ex = valid; S.rec = Array.isArray(o.rec) ? o.rec : [];
+    S.rules = o.rules && typeof o.rules === 'object' ? o.rules : {};
   } else {
+    if (o.rules && typeof o.rules === 'object') for (const k in o.rules) if (!S.rules[k]) S.rules[k] = o.rules[k];
     const ids = new Set(S.ex.map(e => e.id)), rids = new Set(S.rec.map(r => r.id)), cids = new Set(S.cats.map(c => c.id));
     for (const c of (o.cats || [])) if (!cids.has(c.id)) S.cats.push(c);
     for (const e of valid) if (!ids.has(e.id)) S.ex.push(e);
@@ -793,6 +838,358 @@ function makeDemo() {
   save();
 }
 
+/* ---------- import: สลิป + statement (ประมวลผลในเครื่องเท่านั้น) ---------- */
+const VENDOR = 'vendor/';
+function loadScript(src) {
+  return new Promise((ok, no) => {
+    if (document.querySelector(`script[data-v="${src}"]`)) return ok();
+    const s = document.createElement('script'); s.src = VENDOR + src; s.dataset.v = src;
+    s.onload = ok; s.onerror = () => no(new Error('โหลดเครื่องมือ ' + src + ' ไม่ได้ (ครั้งแรกต้องต่อเน็ต)'));
+    document.head.append(s);
+  });
+}
+async function getPdfLib() { await loadScript('pdf.min.js'); pdfjsLib.GlobalWorkerOptions.workerSrc = VENDOR + 'pdf.worker.min.js'; return pdfjsLib; }
+async function getOcr(onProg) {
+  await loadScript('tesseract.min.js');
+  return Tesseract.createWorker('tha+eng', 1, { workerPath: VENDOR + 'worker.min.js', corePath: VENDOR, langPath: VENDOR, workerBlobURL: false, logger: m => onProg && onProg(m) });
+}
+
+const BANKS = { '002': 'BBL', '004': 'KBANK', '006': 'KTB', '011': 'TTB', '014': 'SCB', '025': 'BAY', '030': 'GSB', '034': 'BAAC', '069': 'KKP', '022': 'CIMB', '024': 'UOB' };
+const BANK_TH = { KBANK: 'กสิกรไทย', SCB: 'ไทยพาณิชย์', BBL: 'กรุงเทพ', KTB: 'กรุงไทย', TTB: 'ทีทีบี', BAY: 'กรุงศรี', GSB: 'ออมสิน' };
+const TH_MON_KEYS = ['มค', 'กพ', 'มีค', 'เมย', 'พค', 'มิย', 'กค', 'สค', 'กย', 'ตค', 'พย', 'ธค'];
+const thMonth = tok => TH_MON_KEYS.indexOf(String(tok).replace(/[.\sุู่้๊๋็์]/g, ''));
+const MONEY = /^-?\d{1,3}(?:,\d{3})*\.\d{2}$|^-?\d+\.\d{2}$/;
+const toNum = s => parseFloat(String(s).replace(/,/g, ''));
+
+/* ---- ชื่อผู้รับ → หมวด ---- */
+const DICT = [
+  ['food', ['wongnai', 'line man', 'lineman', 'foodpanda', 'grabfood', 'grab food', 'robinhood', 'mk restaurant', 'kfc', 'mcdonald', 'burger king', 'pizza', 'sizzler', 's&p', 'bonchon', 'swensen', 'dairy queen', 'after you', 'shabu', 'ชาบู', 'หมูกระทะ', 'ร้านอาหาร', 'ก๋วยเตี๋ยว', 'restaurant', 'kitchen', 'foodland', 'bakery', 'เบเกอรี่']],
+  ['drink', ['starbucks', 'cafe amazon', 'café amazon', 'amazon', 'café', 'cafe', 'coffee', 'กาแฟ', 'inthanin', 'อินทนิล', 'chatramue', 'ชาตรามือ', 'bubble', 'ชานม', 'tea house']],
+  ['fuel', ['ptt', 'ปตท', 'บางจาก', 'bangchak', 'shell', 'เชลล์', 'esso', 'เอสโซ่', 'caltex', 'คาลเท็กซ์', 'susco', 'pt station', 'ปั๊มน้ำมัน']],
+  ['travel', ['grab', 'bolt', 'bts', 'mrt', 'rabbit', 'easy pass', 'easypass', 'm-pass', 'การทางพิเศษ', 'taxi', 'แท็กซี่', 'airasia', 'nok air', 'thai lion', 'การบินไทย', 'รถไฟ', 'muvmi', 'ที่จอดรถ', 'parking']],
+  ['home', ['7-eleven', '7-11', '7 eleven', 'เซเว่น', 'cp all', 'ซีพี ออลล์', 'lotus', 'โลตัส', 'big c', 'bigc', 'บิ๊กซี', 'makro', 'แม็คโคร', 'แมคโคร', 'tops', 'villa market', 'family mart', 'familymart', 'lawson', 'cj more', 'gourmet', 'homepro', 'โฮมโปร', 'ไทวัสดุ', 'thaiwatsadu', 'ikea', 'dohome', 'global house', 'โกลบอลเฮ้าส์', 'mr.diy', 'mr diy']],
+  ['shop', ['shopee', 'lazada', 'central', 'robinson', 'the mall', 'emporium', 'uniqlo', 'tiktok', 'watsons', 'eveandboy', 'beautrium', 'decathlon', 'b2s', 'power buy', 'banana it']],
+  ['health', ['โรงพยาบาล', 'hospital', 'รพ.', 'คลินิก', 'clinic', 'ร้านยา', 'pharmacy', 'เภสัช', 'boots', 'fascino', 'ทันตกรรม', 'dental', 'fitness', 'ฟิตเนส']],
+  ['bill', ['การไฟฟ้า', 'กฟภ', 'กฟน', 'การประปา', 'กปภ', 'กปน', 'advanced info', 'ais', 'true move', 'truemove', 'true online', 'ทรู', 'dtac', 'ดีแทค', '3bb', 'ทีโอที', 'internet', 'ค่าน้ำ', 'ค่าไฟ', 'ประกัน', 'insurance', 'ภาษี', 'กรมสรรพากร', 'ส่วนกลาง', 'นิติบุคคลอาคาร', 'juristic', 'ค่าธรรมเนียม']],
+  ['fun', ['netflix', 'spotify', 'youtube', 'disney', 'hbo', 'viu', 'major', 'เมเจอร์', 'sf cinema', 'sfx', 'steam', 'playstation', 'nintendo', 'apple.com', 'itunes', 'google play', 'joox']],
+  ['loan', ['บัตรเครดิต', 'credit card', 'สินเชื่อ', 'ผ่อน', 'leasing', 'ลีสซิ่ง', 'tisco', 'ทิสโก้', 'ktc', 'เคทีซี', 'aeon', 'อิออน', 'first choice', 'กรุงศรีออโต้', 'krungsri auto']]
+];
+function cleanPayee(s) {
+  return String(s || '').replace(/\+\+/g, ' ')
+    .replace(/^(โอนไป|โอนเงินไป|เพื่อชำระ|ชำระ|จ่ายบิล|รับโอนจาก|จาก|ถึง|ไปยัง|to|from)\s*/i, '')
+    .replace(/\bref\b\s*/gi, '').replace(/\bX\d{3,}\b/gi, '')
+    .replace(/(?:^|\s)(พร้อมเพย์|promptpay|scb|ktb|bbl|bay|ttb|gsb|kbank|uob|cimb|baac|kkp|lhb)(?=\s|$)/gi, ' ')
+    .replace(/\s+/g, ' ').trim();
+}
+const payeeKey = p => cleanPayee(p).toLowerCase().replace(/[^a-z0-9ก-๙]+/g, ' ').trim().slice(0, 60);
+const TITLE_RE = /^(นาย|นาง|นางสาว|น\.ส\.|ด\.ช\.|ด\.ญ\.)/;
+const isPerson = p => /^(นาย|นาง|นางสาว|น\.ส\.|ด\.ช\.|ด\.ญ\.|mr\.?|mrs\.?|ms\.?|miss)(\s|[ก-๙A-Z])/i.test(cleanPayee(p));
+function myNames() {
+  const n = String(S.settings.myName || '').replace(/^(นาย|นางสาว|นาง|น\.ส\.|mr\.?|mrs\.?|ms\.?|miss)\s*/i, '').trim();
+  return n.split(/\s+/).filter(w => w.length >= 3).slice(0, 1).map(w => w.toLowerCase());
+}
+const isSelf = p => { const me = myNames(); const t = cleanPayee(p).toLowerCase(); return me.length > 0 && me.some(w => t.includes(w)); };
+function kwHit(hay, w) {
+  if (/[ก-๙]/.test(w)) return hay.includes(w);
+  let at = hay.indexOf(w);
+  const alnum = ch => !!ch && /[a-z0-9]/.test(ch);
+  while (at >= 0) { if (!alnum(hay[at - 1]) && !alnum(hay[at + w.length])) return true; at = hay.indexOf(w, at + 1); }
+  return false;
+}
+function guessCat(payee, desc) {
+  const k = payeeKey(payee);
+  if (k && S.rules[k]) { const r = S.rules[k]; return { cat: r.cat || 'other', fixed: !!r.fixed, skip: !!r.skip, how: 'rule' }; }
+  if (isSelf(payee)) return { cat: 'other', skip: true, how: 'self' };
+  const hay = (cleanPayee(payee) + ' ' + (desc || '')).toLowerCase();
+  if (/ถอนเงินสด|atm/.test(hay)) return { cat: 'other', how: 'dict', note: 'ถอนเงินสด' };
+  for (const [cat, kws] of DICT) for (const w of kws) if (kwHit(hay, w)) return { cat, fixed: cat === 'bill' || cat === 'loan', how: 'dict' };
+  if (isPerson(payee)) return { cat: 'transfer', how: 'person' };
+  return { cat: 'other', how: 'unknown' };
+}
+
+/* ---- สลิป ---- */
+function tlv(str) { const o = {}; let i = 0; while (i + 4 <= str.length) { const t = str.substr(i, 2), l = parseInt(str.substr(i + 2, 2), 10); if (isNaN(l)) break; o[t] = str.substr(i + 4, l); i += 4 + l; } return o; }
+function parseSlipQr(s) {
+  if (!s) return null;
+  const top = tlv(s); if (!top['00']) return null;
+  const inner = tlv(top['00']); if (inner['00'] !== '000001' || !inner['02']) return null;
+  return { bankCode: inner['01'], bank: BANKS[inner['01']] || inner['01'], ref: inner['02'] };
+}
+function dateFromRef(q) {
+  if (!q) return null;
+  const now = new Date(), lim = new Date(now.getTime() + 864e5);
+  if (q.bankCode === '004') {
+    const m = /^\d{3}(\d{3})(\d{2})(\d{2})(\d{2})/.exec(q.ref);
+    if (m && +m[1] >= 1 && +m[1] <= 366 && +m[2] < 24 && +m[3] < 60) for (const y of [now.getFullYear(), now.getFullYear() - 1]) { const d = new Date(y, 0, +m[1]); if (d <= lim) return { date: ymd(d), time: m[2] + ':' + m[3] }; }
+  }
+  const m = /^(20\d{2})(\d{2})(\d{2})/.exec(q.ref);
+  if (m) { const d = new Date(+m[1], +m[2] - 1, +m[3]); if (d.getMonth() === +m[2] - 1 && d <= lim) return { date: ymd(d) }; }
+  return null;
+}
+function parseSlipText(t) {
+  const lines = t.split('\n').map(x => x.trim()).filter(Boolean), r = {};
+  for (const ln of lines) {
+    const m = /(\d{1,2})\s*([ก-๙][ก-๙.\s]{1,7}?)\s*(25\d{2}|\d{2})(?!\d)/.exec(ln);
+    if (m) { const mo = thMonth(m[2]); if (mo >= 0 && +m[1] >= 1 && +m[1] <= 31) { let y = +m[3]; y = y < 100 ? y + 2500 - 543 : y > 2400 ? y - 543 : y; r.date = `${y}-${pad(mo + 1)}-${pad(+m[1])}`; const tm = /(\d{1,2})[:.](\d{2})/.exec(ln.slice(m.index + m[0].length)); if (tm && +tm[1] < 24) r.time = pad(+tm[1]) + ':' + tm[2]; break; } }
+  }
+  const moneyIn = s => { const m = /(\d{1,3}(?:,\d{3})+|\d+)\.\d{2}/.exec(s); return m ? toNum(m[0]) : null; };
+  const ai = lines.findIndex(l => /จ[ําำ]นวน|amount/i.test(l));
+  if (ai >= 0) for (let i = ai; i < Math.min(lines.length, ai + 4); i++) { const v = moneyIn(i === ai ? lines[i].replace(/.*(จ[ําำ]นวน|amount)/i, '') : lines[i]); if (v > 0) { r.amt = v; break; } }
+  if (!r.amt) for (const l of lines) { if (/ธรรมเนียม|fee|คงเหลือ/i.test(l)) continue; const v = moneyIn(l); if (v > 0 && /บาท|thb|um|vn/i.test(l)) { r.amt = v; break; } }
+  const mask = /[xX%*]{2,}[-xX%*\d]{3,}/;
+  const mi = lines.findIndex(l => mask.test(l));
+  if (mi >= 0) for (let i = mi + 1; i < Math.min(lines.length, mi + 4); i++) {
+    if (mask.test(lines[i]) || /จ[ําำ]นวน/.test(lines[i])) break;
+    const toks = lines[i].split(/\s+/); while (toks.length && toks[0].replace(/[^A-Za-zก-๙]/g, '').length < 3) toks.shift();
+    if (toks.some(t => /[ก-๙]/.test(t))) while (toks.length > 1 && !/[ก-๙]/.test(toks[0]) && toks[0].length <= 4) toks.shift();
+    const name = toks.join(' ').replace(/[|\[\]{}]+.*$/, '').trim();
+    if (name.replace(/[^A-Za-zก-๙]/g, '').length >= 3) { r.payee = name; break; }
+  }
+  r.kind = /โอนเงิน|transfer/i.test(t) ? 'โอนเงิน' : /จ่ายบิล|ชำระ|payment|bill/i.test(t) ? 'จ่ายบิล' : /เติมเงิน|top ?up/i.test(t) ? 'เติมเงิน' : '';
+  return r;
+}
+async function fileToCanvas(file, maxW) {
+  const url = URL.createObjectURL(file);
+  try {
+    const img = new Image(); img.src = url; await img.decode();
+    const sc = Math.min(1, maxW / img.naturalWidth), c = document.createElement('canvas');
+    c.width = Math.round(img.naturalWidth * sc); c.height = Math.round(img.naturalHeight * sc);
+    c.getContext('2d').drawImage(img, 0, 0, c.width, c.height);
+    return c;
+  } finally { URL.revokeObjectURL(url); }
+}
+function readQr(c) {
+  const x = c.getContext('2d'), d = x.getImageData(0, 0, c.width, c.height);
+  let q = jsQR(d.data, d.width, d.height, { inversionAttempts: 'dontInvert' });
+  if (!q) { const w = Math.round(c.width * 0.45), h = Math.round(c.height * 0.45), d2 = x.getImageData(c.width - w, c.height - h, w, h); q = jsQR(d2.data, w, h); }
+  return q ? q.data : null;
+}
+function binarize(c, th) {
+  const o = document.createElement('canvas'); o.width = c.width; o.height = c.height;
+  const x = o.getContext('2d'); x.drawImage(c, 0, 0);
+  const d = x.getImageData(0, 0, o.width, o.height), a = d.data;
+  for (let i = 0; i < a.length; i += 4) { const v = (0.299 * a[i] + 0.587 * a[i + 1] + 0.114 * a[i + 2]) < th ? 0 : 255; a[i] = a[i + 1] = a[i + 2] = v; }
+  x.putImageData(d, 0, 0); return o;
+}
+
+/* ---- statement PDF ---- */
+let PWQ = null;
+function askPassword(name, again) {
+  return new Promise(res => {
+    PWQ = res;
+    openSheet(`<div class="sh-h"><b>🔒 PDF มีรหัสผ่าน</b><button class="x" data-act="close" aria-label="ปิด">✕</button></div>
+    <div class="small muted" style="margin-bottom:10px">${esc(name)}<br>${again ? '<b style="color:var(--bad)">รหัสไม่ถูก ลองใหม่อีกครั้ง</b><br>' : ''}statement ธนาคารส่วนใหญ่ใช้วันเกิด เช่น ววดดปปปป (พ.ศ.) · รหัสใช้เปิดไฟล์ในเครื่องนี้เท่านั้น ไม่ถูกเก็บ</div>
+    <label class="fld"><input id="pdfPw" type="password" inputmode="numeric" autocomplete="off" placeholder="รหัสผ่าน PDF"></label>
+    <button class="btn primary block" data-act="pdfPass">เปิดไฟล์</button>`);
+    const i = $('#pdfPw'); i.focus(); i.addEventListener('keydown', e => { if (e.key === 'Enter') { e.preventDefault(); const q = PWQ; PWQ = null; q && q(i.value); } });
+    const bd = SH && SH.bd; if (bd) bd.addEventListener('click', () => { if (PWQ) { const q = PWQ; PWQ = null; q(null); } });
+    const x = SH && SH.sh.querySelector('[data-act=close]'); if (x) x.addEventListener('click', () => { if (PWQ) { const q = PWQ; PWQ = null; q(null); } });
+  });
+}
+async function readPdfItems(file) {
+  const lib = await getPdfLib(), buf = new Uint8Array(await file.arrayBuffer());
+  let password, again = false;
+  for (let tries = 0; tries < 6; tries++) {
+    try {
+      const doc = await lib.getDocument({ data: buf.slice(), password, isEvalSupported: false, disableFontFace: true }).promise;
+      const out = [];
+      for (let p = 1; p <= doc.numPages; p++) {
+        const pg = await doc.getPage(p), tc = await pg.getTextContent();
+        for (const it of tc.items) { const s = (it.str || '').trim(); if (s) out.push({ p, x: it.transform[4], y: it.transform[5], s }); }
+      }
+      await doc.destroy();
+      return out;
+    } catch (e) {
+      if (e && e.name === 'PasswordException') { password = await askPassword(file.name, again); again = true; if (password == null) throw new Error('ยกเลิก'); continue; }
+      throw e;
+    }
+  }
+  throw new Error('รหัสผ่านไม่ถูกต้อง');
+}
+function parseStatement(items) {
+  const all = items.map(i => i.s).join(' ');
+  const bank = /KBPDF|K PLUS|กสิกรไทย|K Contact Center/i.test(all) ? 'KBANK' : /SCB|ไทยพาณิชย์|SCB EASY/i.test(all) ? 'SCB' : 'OTHER';
+  const nm = /ชื่อบัญชี\s*[:：]?\s*((?:นาย|นางสาว|นาง|น\.ส\.)?\s*[ก-๙]+\s+[ก-๙]+)/.exec(all) || /(?:Account Name|ชื่อ)\s*[:：]?\s*((?:MR|MRS|MS|MISS)\.?\s+[A-Z]+\s+[A-Z]+)/i.exec(all);
+  const rowsMap = new Map();
+  for (const it of items) { const k = it.p + ':' + Math.round(it.y / 2.5); if (!rowsMap.has(k)) rowsMap.set(k, []); rowsMap.get(k).push(it); }
+  const rows = [...rowsMap.entries()].map(([k, a]) => ({ p: a[0].p, y: a[0].y, t: a.sort((u, v) => u.x - v.x) })).sort((a, b) => a.p - b.p || b.y - a.y);
+  const DATE = /^(\d{2})[-\/](\d{2})[-\/](\d{2}|\d{4})$/;
+  let prev = null; const out = [];
+  for (const r of rows) {
+    const toks = r.t.flatMap(t => t.s.split(/\s{2,}/).map(s => ({ x: t.x, s: s.trim() }))).filter(t => t.s);
+    const joined = toks.map(t => t.s).join(' ');
+    const money = toks.filter(t => MONEY.test(t.s));
+    if (/ยอดยกมา|brought forward|ยอดคงเหลือยกมา/i.test(joined)) { const nn = joined.match(/\d{1,3}(?:,\d{3})*\.\d{2}/g); if (nn) prev = toNum(nn[nn.length - 1]); continue; }
+    const dt = toks.find(t => DATE.test(t.s)); if (!dt || !money.length) { if (out.length && !dt && !money.length && r.p === out[out.length - 1].p && Math.abs(r.y - out[out.length - 1].y) < 14) { const extra = toks.filter(t => t.x > 300).map(t => t.s).join(' '); if (extra && !/หน้า|page/i.test(extra)) out[out.length - 1].desc += ' ' + extra; } continue; }
+    const m = DATE.exec(dt.s); let y = +m[3]; y = y < 100 ? (y > 50 ? y + 2500 - 543 : y + 2000) : y > 2400 ? y - 543 : y;
+    const date = `${y}-${m[2]}-${m[1]}`;
+    const tm = toks.find(t => /^\d{2}:\d{2}$/.test(t.s));
+    const text = toks.filter(t => t !== dt && t !== tm && !MONEY.test(t.s));
+    let amt = null, bal = null, dir = null;
+    const vals = money.map(t => toNum(t.s));
+    if (vals.length >= 2) {
+      const pairs = [];
+      for (let i = 0; i < vals.length; i++) for (let j = 0; j < vals.length; j++) if (i !== j) pairs.push([vals[i], vals[j]]);
+      if (prev != null) for (const [a, b] of pairs) { if (Math.abs(prev - a - b) < 0.011) { amt = a; bal = b; dir = 'out'; break; } if (Math.abs(prev + a - b) < 0.011) { amt = a; bal = b; dir = 'in'; break; } }
+      if (amt == null) { const s2 = money.slice().sort((u, v) => u.x - v.x); amt = toNum(s2[0].s); bal = toNum(s2[s2.length - 1].s); dir = /รับ|ฝาก|deposit|เข้า/i.test(joined) ? 'in' : 'out'; }
+    } else { amt = vals[0]; dir = /รับ|ฝาก|deposit|เข้า/i.test(joined) ? 'in' : 'out'; }
+    if (bal != null) prev = bal;
+    const desc = text.slice().sort((a, b) => b.s.length - a.s.length)[0];
+    const kind = text.filter(t => t !== desc).map(t => t.s).join(' · ');
+    out.push({ p: r.p, y: r.y, date, time: tm ? tm.s : '', amt, bal, dir, desc: desc ? desc.s : '', kind });
+  }
+  return { bank, owner: nm ? nm[1].replace(/\s+/g, ' ').trim() : '', rows: out };
+}
+
+/* ---- นำเข้า: สร้างแถวตรวจ ---- */
+let IMP = null;
+function findDup(r) {
+  if (r.ref && S.ex.some(e => e.src && e.src.ref === r.ref)) return 'ซ้ำ (นำเข้าแล้ว)';
+  const near = S.ex.find(e => e.date === r.date && Math.abs(e.amt - r.amt) < 0.01 && (!e.time || !r.time || Math.abs(hm(e.time) - hm(r.time)) <= 3));
+  if (near) return near.src ? 'ซ้ำกับรายการที่นำเข้าแล้ว' : 'อาจซ้ำกับที่จดเอง';
+  return null;
+}
+const hm = t => { const [a, b] = String(t).split(':').map(Number); return a * 60 + (b || 0); };
+function mkRow(o) {
+  const g = guessCat(o.payee, o.desc);
+  const r = { ...o, cat: g.cat, fixed: !!g.fixed, how: g.how, note: o.payee || g.note || o.desc || '', on: true, skipWhy: null };
+  if (o.dir === 'in') { r.on = false; r.skipWhy = 'เงินเข้า'; }
+  else if (g.how === 'self' || g.skip) { r.on = false; r.skipWhy = g.how === 'self' ? 'โอนเข้าบัญชีตัวเอง' : 'ตั้งไว้ว่าไม่ใช่รายจ่าย'; }
+  else { const d = findDup(r) || (IMP && IMP.rows.some(x => x !== r && x.on && x.date === r.date && Math.abs(x.amt - r.amt) < 0.01 && (!x.time || !r.time || Math.abs(hm(x.time) - hm(r.time)) <= 3)) ? 'ซ้ำกันในชุดนี้' : null); if (d) { r.on = false; r.skipWhy = d; } }
+  if (!(r.amt > 0)) { r.on = false; r.check = 'อ่านจำนวนเงินไม่ได้ — กรอกเอง'; }
+  if (r.on && g.how === 'unknown') r.skipWhy = 'unknown';
+  return r;
+}
+function openFabMenu() {
+  openSheet(`<div class="sh-h"><b>เพิ่มรายจ่าย</b><button class="x" data-act="close" aria-label="ปิด">✕</button></div>
+  <div class="menu-list">
+    <button data-act="impSlip"><span>🧾</span><div><b>นำเข้าสลิป</b><small>เลือกรูปสลิปจากอัลบั้ม ได้ทีละหลายใบ</small></div></button>
+    <button data-act="impPdf"><span>📄</span><div><b>นำเข้า Statement (PDF)</b><small>K PLUS · SCB EASY — ไฟล์รายเดือน/รายสัปดาห์</small></div></button>
+    <button data-act="add"><span>✍️</span><div><b>จดเอง</b><small>เงินสด หรือรายการที่ไม่มีสลิป</small></div></button>
+  </div>
+  <div class="small muted" style="margin-top:12px">🔒 ไฟล์ถูกอ่านในเครื่องนี้เท่านั้น ไม่มีการส่งออกไปที่ไหน และแอพไม่เก็บรูปสลิปไว้ เก็บแค่วันที่ จำนวนเงิน และชื่อผู้รับ</div>`);
+}
+function importCard() {
+  return `<div class="card"><h2>นำเข้าจากธนาคาร <small>— อ่านในเครื่อง ไม่ส่งออกไปไหน 🔒</small></h2><div class="imp-btns"><button data-act="impSlip"><span>🧾</span>สลิป<small>เลือกได้หลายรูป</small></button><button data-act="impPdf"><span>📄</span>Statement<small>PDF จาก K PLUS / SCB</small></button></div></div>`;
+}
+function progressSheet(title) {
+  openSheet(`<div class="sh-h"><b>${title}</b></div><div class="prog"><i id="pg" style="width:2%"></i></div><div class="small muted" id="pgt">กำลังเตรียมเครื่องมืออ่านไฟล์…</div>`);
+  return (frac, txt) => { const i = $('#pg'), t = $('#pgt'); if (i) i.style.width = Math.max(2, Math.round(frac * 100)) + '%'; if (t && txt) t.textContent = txt; };
+}
+async function importSlips(files) {
+  const prog = progressSheet('กำลังอ่านสลิป');
+  IMP = { kind: 'slip', title: `สลิป ${files.length} ใบ`, rows: [], urls: [] };
+  let worker = null;
+  try {
+    await loadScript('jsQR.js');
+    prog(0.03, 'กำลังโหลดตัวอ่านภาษาไทย (ครั้งแรกอาจใช้เวลาสักครู่)…');
+    worker = await getOcr();
+    for (let i = 0; i < files.length; i++) {
+      const f = files[i];
+      prog((i + 0.2) / files.length, `อ่านสลิป ${i + 1}/${files.length}…`);
+      let c;
+      try { c = await fileToCanvas(f, 1300); } catch (e) { IMP.rows.push(mkRow({ src: 'slip', bank: 'OTHER', date: todayStr(), time: '', amt: 0, payee: f.name, desc: '' })); IMP.rows[IMP.rows.length - 1].check = 'เปิดรูปไม่ได้'; continue; }
+      const q = parseSlipQr(readQr(c)), qd = dateFromRef(q);
+      const { data } = await worker.recognize(binarize(c, 125));
+      const t = parseSlipText(data.text || '');
+      if (t.payee && /[ก-๙]/.test(t.payee) && !TITLE_RE.test(t.payee) && Array.isArray(data.lines)) {
+        const key = t.payee.split(' ').pop(), ln = data.lines.find(l => (l.text || '').includes(key));
+        if (ln && ln.bbox) {
+          const b = ln.bbox, pad2 = 8, rect = { left: Math.max(0, b.x0 - pad2), top: Math.max(0, b.y0 - pad2), width: Math.min(c.width, b.x1 + pad2) - Math.max(0, b.x0 - pad2), height: Math.min(c.height, b.y1 + pad2) - Math.max(0, b.y0 - pad2) };
+          try { const r2 = await worker.recognize(binarize(c, 150), { rectangle: rect }); const alt = parseSlipText('xxx-xxx-0000\n' + (r2.data.text || '').trim()).payee; if (alt && TITLE_RE.test(alt)) t.payee = alt; } catch (e) {}
+        }
+      }
+      let date = qd && qd.date || t.date, time = (qd && qd.time) || t.time || '';
+      let check = null;
+      if (qd && t.date && qd.date !== t.date) check = 'วันที่บนสลิปกับ QR ไม่ตรงกัน ตรวจอีกครั้ง';
+      if (!date) { date = todayStr(); check = 'อ่านวันที่ไม่ได้ — ตั้งเป็นวันนี้ ตรวจอีกครั้ง'; }
+      const thumb = URL.createObjectURL(f); IMP.urls.push(thumb);
+      const row = mkRow({ src: 'slip', bank: q ? q.bank : (/K\s?\+|กสิกร/i.test(data.text) ? 'KBANK' : /SCB|ไทยพาณิชย์/i.test(data.text) ? 'SCB' : 'OTHER'), ref: q ? q.ref : null, date, time, amt: t.amt || 0, payee: t.payee || '', desc: t.kind, kind: t.kind, thumb });
+      if (check && !row.check) row.check = check;
+      if (!t.payee && !row.check) row.check = 'อ่านชื่อผู้รับไม่ได้ — ใส่เองได้';
+      IMP.rows.push(row);
+    }
+  } catch (e) {
+    closeSheet(true); toast('⚠️ ' + (e && e.message || 'อ่านสลิปไม่สำเร็จ')); IMP = null; return;
+  } finally { if (worker) worker.terminate(); }
+  renderImport();
+}
+async function importPdfs(files) {
+  let pr = progressSheet('กำลังอ่าน Statement');
+  IMP = { kind: 'stmt', title: '', rows: [], urls: [] };
+  const info = [];
+  try {
+    for (let i = 0; i < files.length; i++) {
+      if (!SH || !SH.sh.querySelector('#pg')) pr = progressSheet('กำลังอ่าน Statement');
+      pr((i + 0.3) / files.length, `อ่านไฟล์ ${i + 1}/${files.length}…`);
+      const items = await readPdfItems(files[i]);
+      if (!items.length) { info.push(`${files[i].name}: ไม่พบตัวหนังสือ (อาจเป็นไฟล์สแกน)`); continue; }
+      const st = parseStatement(items);
+      if (st.owner && !S.settings.myName) { S.settings.myName = st.owner; save(); }
+      const dates = st.rows.map(r => r.date).sort();
+      info.push(`${BANK_TH[st.bank] || 'ธนาคาร'} ${dates.length ? shortDate(dates[0]) + ' – ' + shortDate(dates[dates.length - 1]) : ''} · ${st.rows.length} รายการ`);
+      for (const r of st.rows) IMP.rows.push(mkRow({ src: 'stmt', bank: st.bank, ref: `${st.bank}|${r.date}|${r.time}|${r.amt}|${r.bal ?? ''}`, date: r.date, time: r.time, amt: r.amt, dir: r.dir, payee: cleanPayee(r.desc), desc: r.desc, kind: r.kind }));
+    }
+  } catch (e) {
+    closeSheet(true); if (e && e.message !== 'ยกเลิก') toast('⚠️ อ่าน PDF ไม่สำเร็จ: ' + (e && e.message || '')); IMP = null; return;
+  }
+  IMP.title = info.join(' | ');
+  if (!IMP.rows.length) { closeSheet(true); toast('ไม่พบรายการในไฟล์ — ถ้าเป็นธนาคารอื่นหรือไฟล์สแกน แอพยังอ่านไม่ได้'); IMP = null; return; }
+  renderImport();
+}
+function catOptions(sel) { return S.cats.map(c => `<option value="${c.id}"${c.id === sel ? ' selected' : ''}>${c.icon} ${esc(c.name)}</option>`).join(''); }
+function renderImport() {
+  const R = IMP.rows;
+  R.sort((a, b) => (a.date + a.time).localeCompare(b.date + b.time));
+  const on = R.filter(r => r.on), skipped = R.filter(r => !r.on && r.skipWhy && r.skipWhy !== 'unknown');
+  const unk = on.filter(r => r.skipWhy === 'unknown').length;
+  const whyBadge = r => r.check ? `<span class="why chk">⚠ ${esc(r.check)}</span>` : r.skipWhy && r.skipWhy !== 'unknown' ? `<span class="why skip">${esc(r.skipWhy)}</span>` : r.how === 'rule' ? '<span class="why rule">✓ จำไว้แล้ว</span>' : r.how === 'dict' ? '<span class="why dict">เดาจากชื่อร้าน</span>' : r.how === 'person' ? '<span class="why unk">โอนให้บุคคล — เลือกหมวดได้</span>' : '<span class="why unk">ไม่รู้จัก — เลือกหมวด</span>';
+  const html = `<div class="sh-h"><b>ตรวจรายการก่อนบันทึก</b><button class="x" data-act="close" aria-label="ปิด">✕</button></div>
+  <div class="small muted" style="margin-bottom:8px">${esc(IMP.title)}</div>
+  <div class="chips" style="margin-bottom:10px"><span class="pill info">รายจ่าย ${on.length}</span>${unk ? `<span class="pill high">ต้องเลือกหมวด ${unk}</span>` : ''}${skipped.length ? `<span class="pill mute">ข้าม ${skipped.length}</span>` : ''}</div>
+  <div class="small muted" style="margin-bottom:10px">ติ๊กออก = ไม่นับเป็นรายจ่าย · หมวดที่เลือกจะถูกจำไว้ ครั้งหน้าจัดให้อัตโนมัติ</div>
+  ${R.map((r, i) => `<div class="irow${r.on ? '' : ' off'}${r.on && (r.skipWhy === 'unknown' || r.check) ? ' unk' : ''}">
+    <div class="top1"><input type="checkbox" data-ir="${i}" data-f="on"${r.on ? ' checked' : ''} aria-label="นับเป็นรายจ่าย">${r.thumb ? `<img class="thumb" src="${r.thumb}" alt="">` : ''}
+    <div class="who"><b>${esc(r.note || r.desc || '(ไม่ทราบผู้รับ)')}</b><small>${shortDate(r.date)}${r.time ? ' · ' + r.time + ' น.' : ''} · ${r.bank === 'KBANK' ? 'K PLUS' : r.bank === 'SCB' ? 'SCB' : esc(r.bank)}${r.dir === 'in' ? ' · เงินเข้า' : ''}</small></div>
+    ${r.src === 'slip' || r.check ? `<input class="amtin" data-ir="${i}" data-f="amt" inputmode="decimal" value="${r.amt || ''}" placeholder="฿">` : `<b style="white-space:nowrap${r.dir === 'in' ? ';color:var(--good)' : ''}">${r.dir === 'in' ? '+' : ''}฿${fmt(r.amt)}</b>`}</div>
+    <div class="ctl">${r.dir === 'in' ? '' : `<select data-ir="${i}" data-f="cat" aria-label="หมวด">${catOptions(r.cat)}</select><label><input type="checkbox" data-ir="${i}" data-f="fixed"${r.fixed ? ' checked' : ''}>ไม่นับงบรายวัน</label>`}${whyBadge(r)}</div>
+    ${r.desc && r.desc !== r.note ? `<div class="small faint" style="margin-top:4px">${esc(r.desc)}${r.kind ? ' · ' + esc(r.kind) : ''}</div>` : ''}
+  </div>`).join('')}
+  <div class="sticky-save"><button class="btn primary block" data-act="impSave" id="impSaveBtn" style="padding:14px"></button></div>`;
+  if (SH && SH.sh.querySelector('#impSaveBtn')) { const st = SH.sh.scrollTop; SH.sh.innerHTML = '<div class="grab"></div>' + html; SH.sh.scrollTop = st; }
+  else { openSheet(html); const bd = SH.bd; bd.addEventListener('click', cleanupImport); }
+  updImportTotal();
+}
+function updImportTotal() {
+  if (!IMP) return;
+  const on = IMP.rows.filter(r => r.on && r.amt > 0);
+  const b = $('#impSaveBtn'); if (b) { b.textContent = on.length ? `บันทึก ${on.length} รายการ · ฿${fmt(sum(on))}` : 'ไม่มีรายการที่เลือก'; b.disabled = !on.length; }
+  SH && SH.sh.querySelectorAll('.irow').forEach((el, i) => { const r = IMP.rows[i]; if (r) el.classList.toggle('off', !r.on); });
+}
+function cleanupImport() { if (IMP) { (IMP.urls || []).forEach(u => URL.revokeObjectURL(u)); } IMP = null; }
+function saveImport() {
+  const on = IMP.rows.filter(r => r.on && r.amt > 0);
+  let learned = 0;
+  for (const r of IMP.rows) {
+    const k = payeeKey(r.note || r.payee);
+    if (!k || r.dir === 'in') continue;
+    if (r.on && (r.catTouched || r.how === 'unknown' || r.how === 'person')) { S.rules[k] = { cat: r.cat, fixed: r.fixed }; learned++; }
+    else if (!r.on && !r.skipWhy && r.how !== 'self') { S.rules[k] = { cat: r.cat, skip: true }; learned++; }
+  }
+  for (const r of on) {
+    S.ex.push({ id: uid(), date: r.date, time: r.time || '', amt: r.amt, cat: r.cat, note: r.note || '', tags: { h: r.cat === 'health', l: false }, fixed: !!r.fixed, src: { k: r.src, bank: r.bank, ref: r.ref || null, payee: r.note || r.payee || '' } });
+  }
+  save(); cleanupImport(); closeSheet();
+  if (on.length) { const last = on[on.length - 1].date, d = parseYmd(last); U.month = { y: d.getFullYear(), m: d.getMonth() }; U.sel = last; }
+  render();
+  toast(`บันทึก ${on.length} รายการแล้ว${learned ? ` · จำหมวดไว้ ${learned} ชื่อ` : ''}`);
+}
+function rulesHtml() {
+  const ks = Object.keys(S.rules);
+  if (!ks.length) return '<div class="small muted">ยังไม่มี — แอพจะจำเมื่ออาจารย์เลือกหมวดตอนนำเข้า</div>';
+  return ks.sort().map(k => { const r = S.rules[k], c = catOf(r.cat); return `<div><span>${esc(k)}</span><b class="small">${r.skip ? '🚫 ไม่ใช่รายจ่าย' : c.icon + ' ' + esc(c.name)}</b><button data-act="ruleDel" data-k="${esc(k)}" aria-label="ลบ">✕</button></div>`; }).join('');
+}
+
 /* ---------- events ---------- */
 document.addEventListener('click', ev => {
   const nb = ev.target.closest('.nav button');
@@ -800,10 +1197,17 @@ document.addEventListener('click', ev => {
   const b = ev.target.closest('[data-act]'); if (!b) return;
   const a = b.dataset.act;
   switch (a) {
+    case 'fabmenu': openFabMenu(); break;
+    case 'impSlip': closeSheet(true); $('#slipFile').click(); break;
+    case 'impPdf': closeSheet(true); $('#pdfFile').click(); break;
+    case 'impSave': saveImport(); break;
+    case 'impAll': IMP.rows.forEach(r => { if (!r.skipWhy || r.skipWhy === 'unknown') r.on = true; }); renderImport(); break;
+    case 'pdfPass': { const v = $('#pdfPw').value; if (PWQ) { const q = PWQ; PWQ = null; q(v); } break; }
+    case 'ruleDel': delete S.rules[b.dataset.k]; save(); $('#rulelist').innerHTML = rulesHtml(); break;
     case 'add': openAdd({ date: b.dataset.d || (U.tab === 'calendar' ? U.sel : todayStr()), cat: b.dataset.cat }); break;
     case 'quick': { const f = FREQ[+b.dataset.i]; if (f) openAdd({ cat: f.cat, note: f.note, amt: f.amt }); break; }
     case 'edit': openAdd({ id: b.dataset.id }); break;
-    case 'close': closeSheet(); break;
+    case 'close': closeSheet(); if (IMP) cleanupImport(); break;
     case 'fcat': F.cat = b.dataset.cat; SH.sh.querySelectorAll('[data-act=fcat]').forEach(x => x.classList.toggle('on', x === b)); if (F.cat === 'health' && !F.tags.h) { F.tags.h = true; SH.sh.querySelector('[data-k=h]').classList.add('on'); } break;
     case 'ftag': { const k = b.dataset.k; if (k === 'fixed') F.fixed = !F.fixed; else F.tags[k] = !F.tags[k]; b.classList.toggle('on'); break; }
     case 'fsave': saveForm(); break;
@@ -858,6 +1262,10 @@ document.addEventListener('change', ev => {
   if (t.id === 'qcat') { U.qcat = t.value; $('#loglist').innerHTML = logList(); }
   else if (t.id === 'sWarn') { S.settings.warn = +t.value; save(); render(); }
   else if (t.id === 'sPay') { S.settings.payday = +t.value; save(); render(); }
+  else if (t.id === 'slipFile') { const fs = [...(t.files || [])]; t.value = ''; if (fs.length) importSlips(fs); }
+  else if (t.id === 'pdfFile') { const fs = [...(t.files || [])]; t.value = ''; if (fs.length) importPdfs(fs); }
+  else if (t.id === 'sMyName') { S.settings.myName = t.value.trim(); save(); }
+  else if (t.dataset && t.dataset.ir != null) { const r = IMP && IMP.rows[+t.dataset.ir]; if (!r) return; const f = t.dataset.f; if (f === 'on') r.on = t.checked; else if (f === 'cat') { r.cat = t.value; r.catTouched = true; if (r.skipWhy === 'unknown') r.skipWhy = null; r.on = true; } else if (f === 'fixed') r.fixed = t.checked; else if (f === 'amt') { const v = parseAmt(t.value); r.amt = v > 0 ? v : 0; } updImportTotal(); return; }
   else if (t.id === 'importFile') { const f = t.files && t.files[0]; if (!f) return; const r = new FileReader(); r.onload = () => importData(r.result); r.readAsText(f); t.value = ''; }
 });
 document.addEventListener('keydown', ev => {
