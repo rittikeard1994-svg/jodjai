@@ -317,6 +317,7 @@ const DEF_CATS = [
   { id: 'work', name: 'งาน/เรียน', icon: '📚', color: '#4f46e5' },
   { id: 'transfer', name: 'โอนให้บุคคล', icon: '👤', color: '#0891b2' },
   { id: 'loan', name: 'ผ่อน/บัตรเครดิต', icon: '💳', color: '#be123c' },
+  { id: 'wallet', name: 'วอลเล็ต (TrueMoney/LINE Pay)', icon: '📱', color: '#7c3aed' },
   { id: 'other', name: 'อื่น ๆ', icon: '📦', color: '#94a3b8' }
 ];
 const PALETTE = ['#f97316','#0ea5e9','#ec4899','#14b8a6','#8b5cf6','#e11d48','#16a34a','#4f46e5','#b7791f','#0369a1','#64748b'];
@@ -332,7 +333,7 @@ function load() {
       if (!Array.isArray(s.rec)) s.rec = [];
       if (!Array.isArray(s.cats) || !s.cats.length) s.cats = DEF_CATS.map(c => ({ ...c }));
       if (!s.rules || typeof s.rules !== 'object') s.rules = {};
-      for (const id of ['transfer', 'loan']) if (!s.cats.some(c => c.id === id)) { const oi = s.cats.findIndex(c => c.id === 'other'); s.cats.splice(oi < 0 ? s.cats.length : oi, 0, { ...DEF_CATS.find(c => c.id === id) }); }
+      for (const id of ['transfer', 'loan', 'wallet']) if (!s.cats.some(c => c.id === id)) { const oi = s.cats.findIndex(c => c.id === 'other'); s.cats.splice(oi < 0 ? s.cats.length : oi, 0, { ...DEF_CATS.find(c => c.id === id) }); }
       if (!s.cats.some(c => c.id === 'other')) s.cats.push({ ...DEF_CATS[DEF_CATS.length - 1] });
     } catch (e) {}
   }
@@ -863,22 +864,24 @@ const toNum = s => parseFloat(String(s).replace(/,/g, ''));
 
 /* ---- ชื่อผู้รับ → หมวด ---- */
 const DICT = [
-  ['food', ['wongnai', 'line man', 'lineman', 'foodpanda', 'grabfood', 'grab food', 'robinhood', 'mk restaurant', 'kfc', 'mcdonald', 'burger king', 'pizza', 'sizzler', 's&p', 'bonchon', 'swensen', 'dairy queen', 'after you', 'shabu', 'ชาบู', 'หมูกระทะ', 'ร้านอาหาร', 'ก๋วยเตี๋ยว', 'restaurant', 'kitchen', 'foodland', 'bakery', 'เบเกอรี่']],
-  ['drink', ['starbucks', 'cafe amazon', 'café amazon', 'amazon', 'café', 'cafe', 'coffee', 'กาแฟ', 'inthanin', 'อินทนิล', 'chatramue', 'ชาตรามือ', 'bubble', 'ชานม', 'tea house']],
+  ['wallet', ['true money', 'truemoney', 'rabbit-line pay', 'rabbit line pay', 'line pay', 'airpay', 'dolfin']],
+  ['food', ['ขนมจีบ', 'ขนม', 'ผักสด', 'ผลไม้', 'หมูปิ้ง', 'ไก่ทอด', 'ไก่ย่าง', 'ข้าวมัน', 'ข้าวแกง', 'ข้าว', 'ส้มตำ', 'กริล', 'ปิ้งย่าง', 'ครัว', 'อาหาร', 'wongnai', 'line man', 'lineman', 'foodpanda', 'grabfood', 'grab food', 'robinhood', 'mk restaurant', 'kfc', 'mcdonald', 'burger king', 'pizza', 'sizzler', 's&p', 'bonchon', 'swensen', 'dairy queen', 'after you', 'shabu', 'ชาบู', 'หมูกระทะ', 'ร้านอาหาร', 'ก๋วยเตี๋ยว', 'restaurant', 'kitchen', 'foodland', 'bakery', 'เบเกอรี่']],
+  ['drink', ['อเมซอน', 'คาเฟ่', 'starbucks', 'cafe amazon', 'café amazon', 'amazon', 'café', 'cafe', 'coffee', 'กาแฟ', 'inthanin', 'อินทนิล', 'chatramue', 'ชาตรามือ', 'bubble', 'ชานม', 'tea house']],
   ['fuel', ['ptt', 'ปตท', 'บางจาก', 'bangchak', 'shell', 'เชลล์', 'esso', 'เอสโซ่', 'caltex', 'คาลเท็กซ์', 'susco', 'pt station', 'ปั๊มน้ำมัน']],
   ['travel', ['grab', 'bolt', 'bts', 'mrt', 'rabbit', 'easy pass', 'easypass', 'm-pass', 'การทางพิเศษ', 'taxi', 'แท็กซี่', 'airasia', 'nok air', 'thai lion', 'การบินไทย', 'รถไฟ', 'muvmi', 'ที่จอดรถ', 'parking']],
   ['home', ['7-eleven', '7-11', '7 eleven', 'เซเว่น', 'cp all', 'ซีพี ออลล์', 'lotus', 'โลตัส', 'big c', 'bigc', 'บิ๊กซี', 'makro', 'แม็คโคร', 'แมคโคร', 'tops', 'villa market', 'family mart', 'familymart', 'lawson', 'cj more', 'gourmet', 'homepro', 'โฮมโปร', 'ไทวัสดุ', 'thaiwatsadu', 'ikea', 'dohome', 'global house', 'โกลบอลเฮ้าส์', 'mr.diy', 'mr diy']],
-  ['shop', ['shopee', 'lazada', 'central', 'robinson', 'the mall', 'emporium', 'uniqlo', 'tiktok', 'watsons', 'eveandboy', 'beautrium', 'decathlon', 'b2s', 'power buy', 'banana it']],
+  ['shop', ['shopeepay', 'omise', 'แอดไวซ์', 'advice', 'บานาน่า', 'jib', 'เจไอบี', 'shopee', 'lazada', 'central', 'robinson', 'the mall', 'emporium', 'uniqlo', 'tiktok', 'watsons', 'eveandboy', 'beautrium', 'decathlon', 'b2s', 'power buy', 'banana it']],
   ['health', ['โรงพยาบาล', 'hospital', 'รพ.', 'คลินิก', 'clinic', 'ร้านยา', 'pharmacy', 'เภสัช', 'boots', 'fascino', 'ทันตกรรม', 'dental', 'fitness', 'ฟิตเนส']],
-  ['bill', ['การไฟฟ้า', 'กฟภ', 'กฟน', 'การประปา', 'กปภ', 'กปน', 'advanced info', 'ais', 'true move', 'truemove', 'true online', 'ทรู', 'dtac', 'ดีแทค', '3bb', 'ทีโอที', 'internet', 'ค่าน้ำ', 'ค่าไฟ', 'ประกัน', 'insurance', 'ภาษี', 'กรมสรรพากร', 'ส่วนกลาง', 'นิติบุคคลอาคาร', 'juristic', 'ค่าธรรมเนียม']],
+  ['bill', ['advanced mpay', 'mpay', '123 service', 'counter service', 'เคาน์เตอร์เซอร์วิส', 'การไฟฟ้า', 'กฟภ', 'กฟน', 'การประปา', 'กปภ', 'กปน', 'advanced info', 'ais', 'true move', 'truemove', 'true online', 'ทรู', 'dtac', 'ดีแทค', '3bb', 'ทีโอที', 'internet', 'ค่าน้ำ', 'ค่าไฟ', 'ประกัน', 'insurance', 'ภาษี', 'กรมสรรพากร', 'ส่วนกลาง', 'นิติบุคคลอาคาร', 'juristic', 'ค่าธรรมเนียม']],
   ['fun', ['netflix', 'spotify', 'youtube', 'disney', 'hbo', 'viu', 'major', 'เมเจอร์', 'sf cinema', 'sfx', 'steam', 'playstation', 'nintendo', 'apple.com', 'itunes', 'google play', 'joox']],
-  ['loan', ['บัตรเครดิต', 'credit card', 'สินเชื่อ', 'ผ่อน', 'leasing', 'ลีสซิ่ง', 'tisco', 'ทิสโก้', 'ktc', 'เคทีซี', 'aeon', 'อิออน', 'first choice', 'กรุงศรีออโต้', 'krungsri auto']]
+  ['loan', ['car loan', 'loan', 'บัตรเครดิต', 'credit card', 'สินเชื่อ', 'ผ่อน', 'leasing', 'ลีสซิ่ง', 'tisco', 'ทิสโก้', 'ktc', 'เคทีซี', 'aeon', 'อิออน', 'first choice', 'กรุงศรีออโต้', 'krungsri auto']]
 ];
 function cleanPayee(s) {
   return String(s || '').replace(/\+\+/g, ' ')
-    .replace(/^(โอนไป|โอนเงินไป|เพื่อชำระ|ชำระ|จ่ายบิล|รับโอนจาก|จาก|ถึง|ไปยัง|to|from)\s*/i, '')
+    .replace(/^sips\s+/i, '')
+    .replace(/^(โอนไป|โอนเงินไป|เพื่อชำระ|ชำระ|จ่ายบิล|รับโอนจาก|จาก|ถึง|[ไโใ]ป[ยบ]ัง|to|from)\s*/i, '')
     .replace(/\bref\b\s*/gi, '').replace(/\bX\d{3,}\b/gi, '')
-    .replace(/(?:^|\s)(พร้อมเพย์|promptpay|scb|ktb|bbl|bay|ttb|gsb|kbank|uob|cimb|baac|kkp|lhb)(?=\s|$)/gi, ' ')
+    .replace(/(?:^|\s)(พร้อมเพย์|promptpay|scb|ktb|bbl|bay|ttb|gsb|kbank|kbnk|uob|cimb|baac|kkp|lhb)(?=\s|$)/gi, ' ')
     .replace(/\s+/g, ' ').trim();
 }
 const payeeKey = p => cleanPayee(p).toLowerCase().replace(/[^a-z0-9ก-๙]+/g, ' ').trim().slice(0, 60);
@@ -901,6 +904,7 @@ function guessCat(payee, desc) {
   if (k && S.rules[k]) { const r = S.rules[k]; return { cat: r.cat || 'other', fixed: !!r.fixed, skip: !!r.skip, how: 'rule' }; }
   if (isSelf(payee)) return { cat: 'other', skip: true, how: 'self' };
   const hay = (cleanPayee(payee) + ' ' + (desc || '')).toLowerCase();
+  if (/เติมเงิน\s*wid/i.test(hay)) return { cat: 'other', how: 'shopqr' };
   if (/ถอนเงินสด|atm/.test(hay)) return { cat: 'other', how: 'dict', note: 'ถอนเงินสด' };
   for (const [cat, kws] of DICT) for (const w of kws) if (kwHit(hay, w)) return { cat, fixed: cat === 'bill' || cat === 'loan', how: 'dict' };
   if (isPerson(payee)) return { cat: 'transfer', how: 'person' };
@@ -933,13 +937,14 @@ function parseSlipText(t) {
     if (m) { const mo = thMonth(m[2]); if (mo >= 0 && +m[1] >= 1 && +m[1] <= 31) { let y = +m[3]; y = y < 100 ? y + 2500 - 543 : y > 2400 ? y - 543 : y; r.date = `${y}-${pad(mo + 1)}-${pad(+m[1])}`; const tm = /(\d{1,2})[:.](\d{2})/.exec(ln.slice(m.index + m[0].length)); if (tm && +tm[1] < 24) r.time = pad(+tm[1]) + ':' + tm[2]; break; } }
   }
   const moneyIn = s => { const m = /(\d{1,3}(?:,\d{3})+|\d+)\.\d{2}/.exec(s); return m ? toNum(m[0]) : null; };
-  const ai = lines.findIndex(l => /จ[ําำ]นวน|amount/i.test(l));
-  if (ai >= 0) for (let i = ai; i < Math.min(lines.length, ai + 4); i++) { const v = moneyIn(i === ai ? lines[i].replace(/.*(จ[ําำ]นวน|amount)/i, '') : lines[i]); if (v > 0) { r.amt = v; break; } }
+  const AMT_RE = /จ[\u0E4D\u0E32\u0E33]+นวน|amount/i;
+  const ai = lines.findIndex(l => AMT_RE.test(l));
+  if (ai >= 0) for (let i = ai; i < Math.min(lines.length, ai + 4); i++) { const v = moneyIn(i === ai ? lines[i].replace(/.*(จ[\u0E4D\u0E32\u0E33]+นวน(เงิน)?|amount)/i, '') : lines[i]); if (v > 0) { r.amt = v; break; } }
   if (!r.amt) for (const l of lines) { if (/ธรรมเนียม|fee|คงเหลือ/i.test(l)) continue; const v = moneyIn(l); if (v > 0 && /บาท|thb|um|vn/i.test(l)) { r.amt = v; break; } }
   const mask = /[xX%*]{2,}[-xX%*\d]{3,}/;
   const mi = lines.findIndex(l => mask.test(l));
   if (mi >= 0) for (let i = mi + 1; i < Math.min(lines.length, mi + 4); i++) {
-    if (mask.test(lines[i]) || /จ[ําำ]นวน/.test(lines[i])) break;
+    if (mask.test(lines[i]) || AMT_RE.test(lines[i])) break;
     const toks = lines[i].split(/\s+/); while (toks.length && toks[0].replace(/[^A-Za-zก-๙]/g, '').length < 3) toks.shift();
     if (toks.some(t => /[ก-๙]/.test(t))) while (toks.length > 1 && !/[ก-๙]/.test(toks[0]) && toks[0].length <= 4) toks.shift();
     const name = toks.join(' ').replace(/[|\[\]{}]+.*$/, '').trim();
@@ -1008,15 +1013,17 @@ async function readPdfItems(file) {
 }
 function parseStatement(items) {
   const all = items.map(i => i.s).join(' ');
-  const bank = /KBPDF|K PLUS|กสิกรไทย|K Contact Center/i.test(all) ? 'KBANK' : /SCB|ไทยพาณิชย์|SCB EASY/i.test(all) ? 'SCB' : 'OTHER';
+  const bank = /ธนาคารไทยพาณิชย์|SIAM COMMERCIAL BANK/i.test(all) ? 'SCB' : /KBPDF|K Contact Center|ธนาคารกสิกรไทย|ออกโดย K PLUS/i.test(all) ? 'KBANK' : 'OTHER';
   const nm = /ชื่อบัญชี\s*[:：]?\s*((?:นาย|นางสาว|นาง|น\.ส\.)?\s*[ก-๙]+\s+[ก-๙]+)/.exec(all) || /(?:Account Name|ชื่อ)\s*[:：]?\s*((?:MR|MRS|MS|MISS)\.?\s+[A-Z]+\s+[A-Z]+)/i.exec(all);
-  const rowsMap = new Map();
-  for (const it of items) { const k = it.p + ':' + Math.round(it.y / 2.5); if (!rowsMap.has(k)) rowsMap.set(k, []); rowsMap.get(k).push(it); }
-  const rows = [...rowsMap.entries()].map(([k, a]) => ({ p: a[0].p, y: a[0].y, t: a.sort((u, v) => u.x - v.x) })).sort((a, b) => a.p - b.p || b.y - a.y);
+  let owner = nm ? nm[1].replace(/\s+/g, ' ').trim() : '';
+  if (!owner) { const it = items.find(i => i.p === 1 && /^(นาย|นางสาว|นาง|น\.ส\.)\s*[ก-๙]+\s+[ก-๙]+$/.test(i.s)); if (it) owner = it.s; }
+  const sorted = items.slice().sort((a, b) => a.p - b.p || b.y - a.y || a.x - b.x), rows = [];
+  for (const it of sorted) { const last = rows[rows.length - 1]; if (last && last.p === it.p && Math.abs(last.y - it.y) <= 3.5) last.t.push(it); else rows.push({ p: it.p, y: it.y, t: [it] }); }
+  rows.forEach(r => r.t.sort((u, v) => u.x - v.x));
   const DATE = /^(\d{2})[-\/](\d{2})[-\/](\d{2}|\d{4})$/;
   let prev = null; const out = [];
   for (const r of rows) {
-    const toks = r.t.flatMap(t => t.s.split(/\s{2,}/).map(s => ({ x: t.x, s: s.trim() }))).filter(t => t.s);
+    const toks = r.t.flatMap(t => t.s.replace(/^(\d{2}[-\/]\d{2}[-\/]\d{2,4})\s+(\d{2}:\d{2})(?=\s|$)/, '$1  $2').split(/\s{2,}/).map(s => ({ x: t.x, s: s.trim() }))).filter(t => t.s);
     const joined = toks.map(t => t.s).join(' ');
     const money = toks.filter(t => MONEY.test(t.s));
     if (/ยอดยกมา|brought forward|ยอดคงเหลือยกมา/i.test(joined)) { const nn = joined.match(/\d{1,3}(?:,\d{3})*\.\d{2}/g); if (nn) prev = toNum(nn[nn.length - 1]); continue; }
@@ -1038,7 +1045,7 @@ function parseStatement(items) {
     const kind = text.filter(t => t !== desc).map(t => t.s).join(' · ');
     out.push({ p: r.p, y: r.y, date, time: tm ? tm.s : '', amt, bal, dir, desc: desc ? desc.s : '', kind });
   }
-  return { bank, owner: nm ? nm[1].replace(/\s+/g, ' ').trim() : '', rows: out };
+  return { bank, owner, rows: out };
 }
 
 /* ---- นำเข้า: สร้างแถวตรวจ ---- */
@@ -1055,9 +1062,9 @@ function mkRow(o) {
   const r = { ...o, cat: g.cat, fixed: !!g.fixed, how: g.how, note: o.payee || g.note || o.desc || '', on: true, skipWhy: null };
   if (o.dir === 'in') { r.on = false; r.skipWhy = 'เงินเข้า'; }
   else if (g.how === 'self' || g.skip) { r.on = false; r.skipWhy = g.how === 'self' ? 'โอนเข้าบัญชีตัวเอง' : 'ตั้งไว้ว่าไม่ใช่รายจ่าย'; }
-  else { const d = findDup(r) || (IMP && IMP.rows.some(x => x !== r && x.on && x.date === r.date && Math.abs(x.amt - r.amt) < 0.01 && (!x.time || !r.time || Math.abs(hm(x.time) - hm(r.time)) <= 3)) ? 'ซ้ำกันในชุดนี้' : null); if (d) { r.on = false; r.skipWhy = d; } }
+  else { const d = findDup(r) || (o.src === 'slip' && IMP && IMP.rows.some(x => x !== r && x.on && x.date === r.date && Math.abs(x.amt - r.amt) < 0.01 && (!x.time || !r.time || Math.abs(hm(x.time) - hm(r.time)) <= 3)) ? 'ซ้ำกันในชุดนี้' : null); if (d) { r.on = false; r.skipWhy = d; } }
   if (!(r.amt > 0)) { r.on = false; r.check = 'อ่านจำนวนเงินไม่ได้ — กรอกเอง'; }
-  if (r.on && g.how === 'unknown') r.skipWhy = 'unknown';
+  if (r.on && (g.how === 'unknown' || g.how === 'shopqr')) r.skipWhy = 'unknown';
   return r;
 }
 function openFabMenu() {
@@ -1104,7 +1111,7 @@ async function importSlips(files) {
       if (qd && t.date && qd.date !== t.date) check = 'วันที่บนสลิปกับ QR ไม่ตรงกัน ตรวจอีกครั้ง';
       if (!date) { date = todayStr(); check = 'อ่านวันที่ไม่ได้ — ตั้งเป็นวันนี้ ตรวจอีกครั้ง'; }
       const thumb = URL.createObjectURL(f); IMP.urls.push(thumb);
-      const row = mkRow({ src: 'slip', bank: q ? q.bank : (/K\s?\+|กสิกร/i.test(data.text) ? 'KBANK' : /SCB|ไทยพาณิชย์/i.test(data.text) ? 'SCB' : 'OTHER'), ref: q ? q.ref : null, date, time, amt: t.amt || 0, payee: t.payee || '', desc: t.kind, kind: t.kind, thumb });
+      const row = mkRow({ src: 'slip', bank: q ? q.bank : (/K\s?\+|กสิกร/i.test(data.text) ? 'KBANK' : /SCB|ไทยพาณิชย์/i.test(data.text) ? 'SCB' : 'OTHER'), ref: q ? q.ref : null, date, time, amt: t.amt || 0, payee: cleanPayee(t.payee || ''), desc: t.kind, kind: t.kind, thumb });
       if (check && !row.check) row.check = check;
       if (!t.payee && !row.check) row.check = 'อ่านชื่อผู้รับไม่ได้ — ใส่เองได้';
       IMP.rows.push(row);
@@ -1143,7 +1150,7 @@ function renderImport() {
   R.sort((a, b) => (a.date + a.time).localeCompare(b.date + b.time));
   const on = R.filter(r => r.on), skipped = R.filter(r => !r.on && r.skipWhy && r.skipWhy !== 'unknown');
   const unk = on.filter(r => r.skipWhy === 'unknown').length;
-  const whyBadge = r => r.check ? `<span class="why chk">⚠ ${esc(r.check)}</span>` : r.skipWhy && r.skipWhy !== 'unknown' ? `<span class="why skip">${esc(r.skipWhy)}</span>` : r.how === 'rule' ? '<span class="why rule">✓ จำไว้แล้ว</span>' : r.how === 'dict' ? '<span class="why dict">เดาจากชื่อร้าน</span>' : r.how === 'person' ? '<span class="why unk">โอนให้บุคคล — เลือกหมวดได้</span>' : '<span class="why unk">ไม่รู้จัก — เลือกหมวด</span>';
+  const whyBadge = r => r.check ? `<span class="why chk">⚠ ${esc(r.check)}</span>` : r.skipWhy && r.skipWhy !== 'unknown' ? `<span class="why skip">${esc(r.skipWhy)}</span>` : r.how === 'rule' ? '<span class="why rule">✓ จำไว้แล้ว</span>' : r.how === 'dict' ? '<span class="why dict">เดาจากชื่อร้าน</span>' : r.how === 'person' ? '<span class="why unk">โอนให้บุคคล — เลือกหมวดได้</span>' : r.how === 'shopqr' ? '<span class="why unk">ร้านค้า QR ไม่บอกชื่อร้าน — เลือกหมวด</span>' : '<span class="why unk">ไม่รู้จัก — เลือกหมวด</span>';
   const html = `<div class="sh-h"><b>ตรวจรายการก่อนบันทึก</b><button class="x" data-act="close" aria-label="ปิด">✕</button></div>
   <div class="small muted" style="margin-bottom:8px">${esc(IMP.title)}</div>
   <div class="chips" style="margin-bottom:10px"><span class="pill info">รายจ่าย ${on.length}</span>${unk ? `<span class="pill high">ต้องเลือกหมวด ${unk}</span>` : ''}${skipped.length ? `<span class="pill mute">ข้าม ${skipped.length}</span>` : ''}</div>
@@ -1173,7 +1180,7 @@ function saveImport() {
   for (const r of IMP.rows) {
     const k = payeeKey(r.note || r.payee);
     if (!k || r.dir === 'in') continue;
-    if (r.on && (r.catTouched || r.how === 'unknown' || r.how === 'person')) { S.rules[k] = { cat: r.cat, fixed: r.fixed }; learned++; }
+    if (r.on && (r.catTouched || r.how === 'unknown' || r.how === 'person' || r.how === 'shopqr')) { S.rules[k] = { cat: r.cat, fixed: r.fixed }; learned++; }
     else if (!r.on && !r.skipWhy && r.how !== 'self') { S.rules[k] = { cat: r.cat, skip: true }; learned++; }
   }
   for (const r of on) {
